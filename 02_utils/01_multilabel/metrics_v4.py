@@ -1,3 +1,5 @@
+# Computes metrics
+
 # v1  -> Bug corrected in call to compute metrics
 # v2  -> Plots learning curves
 # v3  -> Reads result in jston format. Input path updated
