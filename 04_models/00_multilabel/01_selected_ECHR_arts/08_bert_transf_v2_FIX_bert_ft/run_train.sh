@@ -8,7 +8,7 @@ python train_###.py \
     --input_dir=$INPUT_DIR \
     --output_dir=$OUTPUT_DIR \
     --n_epochs=20 \
-    --batch_size=12 \
+    --batch_size=14 \
     --shuffle_train=True \
     --lr=2e-5 \
     --wd=1e-6 \
@@ -24,7 +24,7 @@ python train_###.py \
     --save_final_model=True \
     --save_model_steps=True \
     --use_cuda=True \
-    --gpu_ids=4,5,6
+    --gpu_ids=0,1
 
 #read -p 'EOF'
 
