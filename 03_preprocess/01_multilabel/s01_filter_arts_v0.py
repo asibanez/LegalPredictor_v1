@@ -43,8 +43,8 @@ selected_articles = ['2', '3', '4', '5', '6', '7', '8', '9',
                      '10', '12', '13', '14', '15', '17', '18']
 
 #%% Path definition
-work_folder = 'C:/Users/siban/Dropbox/CSAIL/Projects/15_LegalPredictor_v1/00_data/02_preprocessed/00_multilabel/01_selected_echr_arts'
-#work_folder = '/data/'
+#work_folder = 'C:/Users/siban/Dropbox/CSAIL/Projects/15_LegalPredictor_v1/00_data/02_preprocessed/00_multilabel/01_selected_echr_arts'
+work_folder = '/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/00_multilabel/01_selected_ECHR_arts'
 input_train_set_path = os.path.join(work_folder, 'model_train.pkl')
 input_dev_set_path = os.path.join(work_folder, 'model_dev.pkl')
 input_test_set_path = os.path.join(work_folder, 'model_test.pkl')
@@ -59,8 +59,10 @@ dev_set = pd.read_pickle(input_dev_set_path)
 test_set = pd.read_pickle(input_test_set_path)
 
 #%% Preprocess labels
+print('Preprocessing labels')
 label_2_id = {id_2_label[x]:x for x in id_2_label.keys()}
 selected_positions = [label_2_id[x] for x in selected_articles]
+print('Done')
 
 labels_train = train_set.labels
 labels_dev = dev_set.labels
@@ -75,7 +77,8 @@ dev_set.labels = labels_dev_new
 test_set.labels = labels_test_new
 
 #%% Save datasets
+print('Saving datasets')
 pd.to_pickle(train_set, output_train_set_path)
 pd.to_pickle(dev_set, output_dev_set_path)
 pd.to_pickle(test_set, output_test_set_path)
-
+print('Done')
