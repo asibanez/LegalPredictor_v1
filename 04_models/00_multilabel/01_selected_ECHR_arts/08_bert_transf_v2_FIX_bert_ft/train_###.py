@@ -245,7 +245,7 @@ def main():
         val_acc_history.append(val_acc) 
 
 #####
-        if eval(args.save_model_steps) == True and epoch >= 9:
+        if eval(args.save_model_steps) == True and epoch >= 1:
 #####
             if len(args.gpu_ids) > 1 and eval(args.use_cuda) == True:
                 torch.save(model.module.state_dict(), output_path_model + '.' + str(epoch))
