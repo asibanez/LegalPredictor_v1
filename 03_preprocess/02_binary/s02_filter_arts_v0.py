@@ -48,9 +48,9 @@ selected_arts = ['2', '3', '4', '5', '6', '7', '8', '9',
                      '10', '12', '13', '14', '15', '17', '18']
 
 #%% Path definition
-input_folder = 'C:/Users/siban/Dropbox/CSAIL/Projects/15_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_echr_arts/00_50pars_256_tok'
-#input_folder = '/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/00_multilabel/01_selected_ECHR_arts'
-output_folder = os.path.join(input_folder,'filtered')
+#input_folder = 'C:/Users/siban/Dropbox/CSAIL/Projects/15_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_echr_arts/00_50pars_256_tok'
+input_folder = '/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_ECHR_arts'
+output_folder = os.path.join(input_folder,'00_filtered')
 
 input_train_set_path = os.path.join(input_folder, 'model_train.pkl')
 input_dev_set_path = os.path.join(input_folder, 'model_dev.pkl')
