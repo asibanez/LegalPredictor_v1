@@ -74,6 +74,11 @@ train_set = filter_f(train_set, num_total_arts, selected_positions)
 dev_set = filter_f(dev_set, num_total_arts, selected_positions)
 test_set = filter_f(test_set, num_total_arts, selected_positions)
 
+#%% Re-index dataframes
+train_set = train_set.reset_index(drop = True)
+dev_set = dev_set.reset_index(drop = True)
+test_set = test_set.reset_index(drop = True)
+
 #%% Save datasets
 print('Saving datasets')
 if not os.path.isdir(output_folder):
