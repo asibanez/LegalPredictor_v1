@@ -62,7 +62,6 @@ test_set = pd.read_pickle(input_test_set_path)
 print('Preprocessing labels')
 label_2_id = {id_2_label[x]:x for x in id_2_label.keys()}
 selected_positions = [label_2_id[x] for x in selected_articles]
-print('Done')
 
 labels_train = train_set.labels
 labels_dev = dev_set.labels
@@ -75,6 +74,7 @@ labels_test_new = [[label[x] for x in selected_positions] for label in labels_te
 train_set.labels = labels_train_new
 dev_set.labels = labels_dev_new
 test_set.labels = labels_test_new
+print('Done')
 
 #%% Save datasets
 print('Saving datasets')
