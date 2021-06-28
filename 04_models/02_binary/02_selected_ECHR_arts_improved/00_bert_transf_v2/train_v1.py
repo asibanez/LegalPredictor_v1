@@ -23,6 +23,7 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
     if mode == 'Val':
         model.eval()
         mode_desc = 'Validating_epoch'
+
     sum_correct = 0
     total_entries = 0
     sum_loss = 0
@@ -42,7 +43,8 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
             Y_labels = Y_labels.to(device)
         
         # Zero gradients
-        optimizer.zero_grad()
+        if mode == 'Train':
+            optimizer.zero_grad()
         
         #Forward + backward + optimize
         pred = model(X_facts_ids, X_facts_token_types, X_facts_attn_masks,
@@ -63,9 +65,10 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
         pred = torch.round(pred)
         sum_correct += (pred == Y_labels).sum().item()
       
-        # Log step
-        logger.info(f'Epoch {epoch + 1} of {args.n_epochs}' +
-                     f' Step {step_idx + 1:,} of {len(data_loader):,}\n')
+        # Log train step
+        if mode == 'Train':
+            logger.info(f'Epoch {epoch + 1} of {args.n_epochs}' +
+                        f' Step {step_idx + 1:,} of {len(data_loader):,}')
         
     # Compute metrics
     avg_loss = sum_loss / total_entries
@@ -74,10 +77,10 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
     # Log results
     if mode == 'Train':
         print(f'\nTrain loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}')
-        logger.info(f'Train loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}\n')
+        logger.info(f'Train loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}')
     if mode == 'Val':
         print(f'\nValidation loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}')
-        logger.info(f'Validation loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}\n')
+        logger.info(f'Validation loss: {avg_loss:.4f} and accuracy: {avg_acc:.4f}')
     
     return avg_loss, avg_acc
 
@@ -118,8 +121,9 @@ def main():
     # Instantiate dataloaders
     train_dl = DataLoader(train_dataset, batch_size = args.batch_size,
                           shuffle = eval(args.shuffle_train),
-                          drop_last = eval(args.drop_last))
-    dev_dl = DataLoader(dev_dataset, batch_size = args.batch_size * 2,
+                          drop_last = eval(args.drop_last_train))
+    dev_dl = DataLoader(dev_dataset,
+                        batch_size = int(args.batch_size * args.dev_train_ratio),
                         shuffle = False)
 
     # Instantiate model
@@ -150,11 +154,10 @@ def main():
         train_loss, train_acc = run_epoch_f(args, mode, model, criterion,
                                             optimizer, logger, train_dl,                                              
                                             device, epoch)
-
         train_loss_history.append(train_loss)
         train_acc_history.append(train_acc)
 
-        model = 'Val'
+        mode = 'Val'
         val_loss, val_acc = run_epoch_f(args, mode, model, criterion,
                                         optimizer, logger, dev_dl,
                                         device, epoch)
@@ -170,8 +173,8 @@ def main():
         utils.save_checkpoint_f(args, epoch, model, optimizer, train_loss)
     
     # Save results
-    utils.save_results_(args, train_loss_history, train_acc_history, val_loss_history,
-                   val_acc_history, start_time)
+    utils.save_results_f(args, train_loss_history, train_acc_history,
+                         val_loss_history, val_acc_history, start_time)
 
 if __name__ == "__main__":
     main()

@@ -19,6 +19,8 @@ def parse_args_f():
                        help = 'train batch size')
     parser.add_argument('--shuffle_train', default = None, type = str, required = True,
                        help = 'shuffle train set')
+    parser.add_argument('--dev_train_ratio', default = None, type = int, required = True,
+                       help = 'size dev set / size train set')    
     parser.add_argument('--drop_last_train', default = None, type = str, required = True,
                        help = 'Drop last batch from train set')    
     parser.add_argument('--train_toy_data', default = None, type = str, required = True,
@@ -69,11 +71,12 @@ def make_dir_f(args):
         print("Created folder : ", args.output_dir)
 
 def get_logger_f(args):
+    path_log_file = os.path.join(args.output_dir, 'log.txt')
     formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    file_handler = logging.FileHandler(filename = 'log_test.txt')
+    file_handler = logging.FileHandler(filename = path_log_file)
     file_handler.setFormatter(formatter)
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     logger.addHandler(file_handler)
     return logger
 
