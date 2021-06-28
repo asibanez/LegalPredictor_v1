@@ -1,10 +1,10 @@
 #INPUT_DIR=C:\\Users\\siban\\Dropbox\\CSAIL\\Projects\\12_Legal_Outcome_Predictor\\00_data\\v2\\01_preprocessed\\03_toy_3
 #OUTPUT_DIR=C:\\Users\\siban\\Dropbox\\CSAIL\\Projects\\12_Legal_Outcome_Predictor\\00_data\\v2\\02_runs\\00_TEST_DELETE
 
-INPUT_DIR=/data/rsg/nlp/sibanez/02_LegalOutcomePredictor/00_data/v2/01_preprocessed/01_50pars_256_tok/02_full_binary
-WORK_DIR=/data/rsg/nlp/sibanez/02_LegalOutcomePredictor/00_data/v2/02_runs/01_binary/00_BERT_TRANSF_v2_FIX_50par_5ep
+INPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_ECHR_arts/00_filtered
+WORK_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/03_runs/01_binary/01_selected_ECHR_arts/00_BERT_TRANSF_v2_FIX_50par_10ep
 
-python -m ipdb test.py \
+python test.py \
     --input_dir=$INPUT_DIR \
     --work_dir=$WORK_DIR \
     --test_file=model_test.pkl \
