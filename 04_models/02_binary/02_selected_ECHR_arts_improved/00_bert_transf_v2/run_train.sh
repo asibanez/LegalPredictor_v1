@@ -4,11 +4,13 @@
 INPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_ECHR_arts/00_filtered
 OUTPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/03_runs/01_binary/01_selected_ECHR_arts/01_TEST_DELETE
 
-python -m ipdb train_v1.py \
+python -m ipdb train_v2.py \
     --input_dir=$INPUT_DIR \
     --output_dir=$OUTPUT_DIR \
+    --task=Train \
+     \
     --n_epochs=2 \
-    --batch_size=4 \
+    --batch_size_train=4 \
     --shuffle_train=True \
     --drop_last_train=True \
     --dev_train_ratio=1 \
@@ -30,7 +32,12 @@ python -m ipdb train_v1.py \
     --save_model_steps=True \
     --save_step_cliff=0 \
     --use_cuda=True \
-    --gpu_ids=0
+    --gpu_ids_train=0 \
+     \
+    --test_file=model_test.pkl \
+    --model_file = model.pt
+    --batch_size_test=4 \
+    --gpu_id_test=0 \
 
 #read -p 'EOF'
 
