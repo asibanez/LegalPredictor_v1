@@ -17,14 +17,14 @@ def parse_args_f():
                         help = 'number of total epochs to run')
     parser.add_argument('--n_epochs', default = None, type = int, required = True,
                         help = 'number of total epochs to run')
-    parser.add_argument('--batch_size', default = None, type = int, required = True,
+    parser.add_argument('--batch_size_train', default = None, type = int, required = True,
                         help = 'train batch size')
     parser.add_argument('--shuffle_train', default = None, type = str, required = True,
-                        help = 'shuffle train set')
-    parser.add_argument('--dev_train_ratio', default = None, type = int, required = True,
-                        help = 'size dev set / size train set')    
+                        help = 'shuffle train set')   
     parser.add_argument('--drop_last_train', default = None, type = str, required = True,
                         help = 'Drop last batch from train set')    
+    parser.add_argument('--dev_train_ratio', default = None, type = int, required = True,
+                        help = 'size dev set / size train set')    
     parser.add_argument('--train_toy_data', default = None, type = str, required = True,
                         help = 'Use toy dataset for training')
     parser.add_argument('--len_train_toy_data', default = None, type = int, required = True,
