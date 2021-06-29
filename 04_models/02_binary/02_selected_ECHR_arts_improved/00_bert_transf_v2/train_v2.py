@@ -56,6 +56,9 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
             pred_score = model(X_facts_ids, X_facts_token_types,
                                X_facts_attn_masks, X_echr_ids,
                                X_echr_token_types, X_echr_attn_masks)
+            # Compute loss
+            pred_score = pred_score.view(-1)
+            loss = criterion(pred_score, Y_labels)
             # Backpropagate
             loss.backward()
             # Update model
@@ -67,9 +70,9 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
                 pred_score = model(X_facts_ids, X_facts_token_types,
                                    X_facts_attn_masks, X_echr_ids,
                                    X_echr_token_types, X_echr_attn_masks)
-
-        pred_score = pred_score.view(-1)
-        loss = criterion(pred_score, Y_labels)
+                # Compute loss
+                pred_score = pred_score.view(-1)
+                loss = criterion(pred_score, Y_labels)
         
         # Book-keeping
         current_batch_size = X_facts_ids.size()[0]
