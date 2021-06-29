@@ -131,7 +131,7 @@ def main():
                               shuffle = eval(args.shuffle_train),
                               drop_last = eval(args.drop_last_train))
         dev_dl = DataLoader(dev_dataset,
-                            batch_size = int(args.batch_size * args.dev_train_ratio),
+                            batch_size = int(args.batch_size_train * args.dev_train_ratio),
                             shuffle = False)
 
     if args.task == 'Test':
@@ -143,7 +143,7 @@ def main():
         test_dataset = ECHR2_dataset(test_dataset)
         # Instantiate dataloaders
         test_dl = DataLoader(test_dataset,
-                             batch_size = int(args.batch_size * args.dev_train_ratio),
+                             batch_size = int(args.batch_size_test),
                              shuffle = False)
 
     # Instantiate model

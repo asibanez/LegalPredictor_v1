@@ -9,6 +9,16 @@ python -m ipdb train_v2.py \
     --output_dir=$OUTPUT_DIR \
     --task=Train \
      \
+    --seq_len=256 \
+    --num_labels=1 \
+    --n_heads=8 \
+    --hidden_dim=512 \
+    --max_n_pars_facts=50 \
+    --max_n_pars_echr=6 \
+    --pad_idx=0 \
+    --seed=1234 \
+    --use_cuda=True \
+     \    
     --n_epochs=2 \
     --batch_size_train=4 \
     --shuffle_train=True \
@@ -20,22 +30,13 @@ python -m ipdb train_v2.py \
     --wd=1e-6 \
     --dropout=0.4 \
     --momentum=0.9 \
-    --seed=1234 \
-    --seq_len=256 \
-    --num_labels=1 \
-    --n_heads=8 \
-    --hidden_dim=512 \
-    --max_n_pars_facts=50 \
-    --max_n_pars_echr=6 \
-    --pad_idx=0 \
     --save_final_model=True \
     --save_model_steps=True \
     --save_step_cliff=0 \
-    --use_cuda=True \
     --gpu_ids_train=0 \
      \
     --test_file=model_test.pkl \
-    --model_file = model.pt
+    --model_file=model.pt \
     --batch_size_test=4 \
     --gpu_id_test=0 \
 

@@ -9,12 +9,35 @@ import torch.nn as nn
 
 def parse_args_f():
     parser = argparse.ArgumentParser()
+    # Task arguments
     parser.add_argument('--input_dir', default = None, type = str, required = True,
                         help = 'input folder')
     parser.add_argument('--output_dir', default = None, type = str, required = True,
                         help = 'output folder')
     parser.add_argument('--task', default = None, type = str, required = True,
                         help = 'number of total epochs to run')
+    
+    # Common arguments
+    parser.add_argument('--seq_len', default = None, type = int, required = True,
+                        help = 'text sequence length')
+    parser.add_argument('--num_labels', default = None, type = int, required = True,
+                        help = 'number of labels')
+    parser.add_argument('--n_heads', default = None, type = int, required = True,
+                        help = 'number of transformer heads')
+    parser.add_argument('--hidden_dim', default = None, type = int, required = True,
+                        help = 'lstm hidden dimension')
+    parser.add_argument('--max_n_pars_facts', default = None, type = int, required = True,
+                        help = 'max number of paragrpahs in facts')
+    parser.add_argument('--max_n_pars_echr', default = None, type = int, required = True,
+                        help = 'max number of paragrahs in echr articles')
+    parser.add_argument('--pad_idx', default = None, type = int, required = True,
+                        help = 'pad token index')      
+    parser.add_argument('--seed', default = None, type = int, required = True,
+                        help = 'random seed')
+    parser.add_argument('--use_cuda', default = None, type = str, required = True,
+                        help = 'use CUDA')
+    
+    # Train arguments
     parser.add_argument('--n_epochs', default = None, type = int, required = True,
                         help = 'number of total epochs to run')
     parser.add_argument('--batch_size_train', default = None, type = int, required = True,
@@ -37,34 +60,25 @@ def parse_args_f():
                         help = 'dropout')
     parser.add_argument('--momentum', default = None, type = float, required = True,
                         help = 'momentum')
-    parser.add_argument('--seed', default = None, type = int, required = True,
-                        help = 'random seed')
-    parser.add_argument('--seq_len', default = None, type = int, required = True,
-                        help = 'text sequence length')
-    parser.add_argument('--num_labels', default = None, type = int, required = True,
-                        help = 'number of labels')
-    parser.add_argument('--n_heads', default = None, type = int, required = True,
-                        help = 'number of transformer heads')
-    parser.add_argument('--hidden_dim', default = None, type = int, required = True,
-                        help = 'lstm hidden dimension')
-    parser.add_argument('--max_n_pars_facts', default = None, type = int, required = True,
-                        help = 'max number of paragrpahs in facts')
-    parser.add_argument('--max_n_pars_echr', default = None, type = int, required = True,
-                        help = 'max number of paragrahs in echr articles')
-    parser.add_argument('--pad_idx', default = None, type = int, required = True,
-                        help = 'pad token index')  
     parser.add_argument('--save_final_model', default = None, type = str, required = True,
                         help = 'final .pt model is saved in output folder')
     parser.add_argument('--save_model_steps', default = None, type = str, required = True,
                         help = 'intermediate .pt models saved in output folder')
     parser.add_argument('--save_step_cliff', default = None, type = int, required = True,
                         help = 'start saving models after cliff')
-    parser.add_argument('--use_cuda', default = None, type = str, required = True,
-                        help = 'use CUDA')
     parser.add_argument('--gpu_ids_train', default = None, type = str, required = True,
-                        help='gpu IDs')
+                        help='gpu IDs for training')
+    
+    # test argments
+    parser.add_argument('--test_file', default = None, type = str, required = True,
+                        help='test datset filename')
+    parser.add_argument('--model_file', default = None, type = str, required = True,
+                        help='trained model filename')
+    parser.add_argument('--batch_size_test', default = None, type = str, required = True,
+                        help='test batch size')
     parser.add_argument('--gpu_id_test', default = None, type = str, required = True,
-                        help='gpu IDs')
+                        help='gpu ID for testing')
+    
     args = parser.parse_args()
 
     return args
