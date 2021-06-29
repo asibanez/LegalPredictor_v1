@@ -20,10 +20,10 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
     if mode == 'Train':
         model.train()
         mode_desc = 'Training_epoch'
-    if mode == 'Validation':
+    elif mode == 'Validation':
         model.eval()
         mode_desc = 'Validating_epoch'
-    if mode == 'Test':
+    elif mode == 'Test':
         model.eval()
         mode_desc = 'Testing_epoch'
 
@@ -82,9 +82,9 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
         sum_correct += (pred_binary == Y_labels).sum().item()
       
         # Append predictions to lists
-        Y_pred_score.append(pred_score)
-        Y_pred_binary.append(pred_binary)
-        Y_gr_truth.append(Y_labels)  
+        Y_pred_score += pred_score.cpu().numpy().tolist()
+        Y_pred_binary += pred_binary.cpu().numpy().tolist()
+        Y_gr_truth += Y_labels.cpu().numpy().tolist()
       
         # Log train step
         if mode == 'Train':
@@ -143,10 +143,13 @@ def main():
                             batch_size = int(args.batch_size_train * args.dev_train_ratio),
                             shuffle = False)
 
-    if args.task == 'Test':
+    elif args.task == 'Test':
         # Load datasets
         print('Loading data')
         test_dataset = pd.read_pickle(path_test_dataset)
+####
+        test_dataset = test_dataset[0:500]
+####
         print('Done')
         # Instantiate dataclasses
         test_dataset = ECHR2_dataset(test_dataset)
@@ -209,16 +212,17 @@ def main():
                                    val_loss_history, val_acc_history, start_time)
 
     # Test procedure
-    if args.task == 'Test':
+    elif args.task == 'Test':
         mode = 'Test'
         # Load model
-        model.load_state_dict(torch.load(args.path_model))
+        path_model = os.path.join(args.output_dir, args.model_file)
+        model.load_state_dict(torch.load(path_model)['model_state_dict'])
         # Compute predictions
         _, _, Y_pred_score, Y_pred_binary, Y_gr_truth = run_epoch_f(args, mode,
                                                                     model, criterion,
                                                                     optimizer, logger,
                                                                     test_dl, device,
-                                                                    epoch)
+                                                                    epoch = None)
         # Save test results
         utils.save_test_results_f(args, Y_pred_score, Y_pred_binary, Y_gr_truth)
 

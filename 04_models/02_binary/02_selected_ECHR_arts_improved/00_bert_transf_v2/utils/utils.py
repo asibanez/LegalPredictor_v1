@@ -108,7 +108,7 @@ def model_2_device_f(args, model):
         if args.task == 'Train':
             gpu_ids = [int(x) for x in args.gpu_ids_train.split(',')]
         if args.task == 'Test':
-            gpu_ids = args.gpu_id_test
+            gpu_ids = [int(args.gpu_id_test)]
         print('Moving model to cuda')
         # DataParallel training if multiple GPU and train task
         if len(gpu_ids) > 1 and args.task == 'Train':
@@ -152,8 +152,8 @@ def save_train_results_f(args, train_loss_history, train_acc_history, val_loss_h
 
 def save_test_results_f(args, Y_pred_score, Y_pred_binary, Y_gr_truth):
     output_path_results = os.path.join(args.output_dir, 'test_results.json')
-    results = {'Y_test_ground_truth': Y_gr_truth.numpy().tolist(),
-               'Y_test_prediction_scores': Y_pred_score.numpy().tolist(),
-               'Y_test_prediction_binary': Y_pred_binary.numpy().tolist()}
+    results = {'Y_test_ground_truth': Y_gr_truth,
+               'Y_test_prediction_scores': Y_pred_score,
+               'Y_test_prediction_binary': Y_pred_binary}
     with open(output_path_results, 'w') as fw:
         json.dump(results, fw)
