@@ -106,7 +106,7 @@ def save_args_f(args):
 def model_2_device_f(args, model):
     if eval(args.use_cuda) and torch.cuda.is_available():
         if args.task == 'Train':
-            gpu_ids = args.gpu_ids_train
+            gpu_ids = [int(x) for x in args.gpu_ids_train.split(',')]
         if args.task == 'Test':
             gpu_ids = args.gpu_id_test
         print('Moving model to cuda')
@@ -127,7 +127,7 @@ def model_2_device_f(args, model):
 
 def save_checkpoint_f(args, epoch, model, optimizer, train_loss):
     output_path_model = os.path.join(args.output_dir, 'model.pt')
-    if len(args.gpu_ids) > 1 and eval(args.use_cuda) == True:
+    if len(args.gpu_ids_train) > 1 and eval(args.use_cuda) == True:
         model_state_dict_save = model.module.state_dict()
     else:
         model_state_dict_save = model.state_dict()

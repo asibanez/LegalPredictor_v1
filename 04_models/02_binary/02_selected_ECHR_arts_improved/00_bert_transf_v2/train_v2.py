@@ -53,8 +53,16 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
             optimizer.zero_grad()
         
         #Forward + backward + optimize
-        pred_score = model(X_facts_ids, X_facts_token_types, X_facts_attn_masks,
-                           X_echr_ids, X_echr_token_types, X_echr_attn_masks)
+        if mode == 'Train':
+            pred_score = model(X_facts_ids, X_facts_token_types,
+                               X_facts_attn_masks, X_echr_ids,
+                               X_echr_token_types, X_echr_attn_masks)
+        else:
+            with torch.no_grad(): 
+                pred_score = model(X_facts_ids, X_facts_token_types,
+                                   X_facts_attn_masks, X_echr_ids,
+                                   X_echr_token_types, X_echr_attn_masks)
+
         pred_score = pred_score.view(-1)
         loss = criterion(pred_score, Y_labels)
         
@@ -108,7 +116,6 @@ def main():
     logger = utils.get_logger_f(args.output_dir)
       
     # Global and seed initialization
-    args.gpu_ids = [int(x) for x in args.gpu_ids.split(',')]
     random.seed = args.seed
     _ = torch.manual_seed(args.seed)
 
@@ -127,7 +134,7 @@ def main():
         train_dataset = ECHR2_dataset(train_dataset)
         dev_dataset = ECHR2_dataset(dev_dataset)
         # Instantiate dataloaders
-        train_dl = DataLoader(train_dataset, batch_size = args.batch_size,
+        train_dl = DataLoader(train_dataset, batch_size = args.batch_size_train,
                               shuffle = eval(args.shuffle_train),
                               drop_last = eval(args.drop_last_train))
         dev_dl = DataLoader(dev_dataset,
@@ -173,15 +180,15 @@ def main():
         for epoch in tqdm(range(args.n_epochs), desc = 'Training dataset'):        
             # Train
             mode = 'Train'    
-            train_loss, train_acc = run_epoch_f(args, mode, model, criterion,
-                                                optimizer, logger, train_dl,                                              
-                                                device, epoch)
+            train_loss, train_acc, _, _, _ = run_epoch_f(args, mode, model, criterion,
+                                                         optimizer, logger, train_dl,                                              
+                                                         device, epoch)
             train_loss_history.append(train_loss)
             train_acc_history.append(train_acc)
     
             # Validate
             mode = 'Validation'
-            val_loss, val_acc = run_epoch_f(args, mode, model, criterion,
+            val_loss, val_acc, _, _, _ = run_epoch_f(args, mode, model, criterion,
                                             optimizer, logger, dev_dl,
                                             device, epoch)
             val_loss_history.append(val_loss)

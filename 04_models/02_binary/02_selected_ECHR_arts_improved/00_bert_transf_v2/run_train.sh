@@ -8,7 +8,7 @@ python -m ipdb train_v2.py \
     --input_dir=$INPUT_DIR \
     --output_dir=$OUTPUT_DIR \
     --task=Train \
-     \
+    \
     --seq_len=256 \
     --num_labels=1 \
     --n_heads=8 \
@@ -18,7 +18,7 @@ python -m ipdb train_v2.py \
     --pad_idx=0 \
     --seed=1234 \
     --use_cuda=True \
-     \    
+    \
     --n_epochs=2 \
     --batch_size_train=4 \
     --shuffle_train=True \
@@ -34,7 +34,7 @@ python -m ipdb train_v2.py \
     --save_model_steps=True \
     --save_step_cliff=0 \
     --gpu_ids_train=0 \
-     \
+    \
     --test_file=model_test.pkl \
     --model_file=model.pt \
     --batch_size_test=4 \
