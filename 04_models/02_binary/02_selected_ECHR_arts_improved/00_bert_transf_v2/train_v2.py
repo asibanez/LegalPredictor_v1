@@ -48,15 +48,20 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
             X_echr_attn_masks = X_echr_attn_masks.to(device)
             Y_labels = Y_labels.to(device)
         
-        # Zero gradients
+        # Train step
         if mode == 'Train':
+            # Zero gradients
             optimizer.zero_grad()
-        
-        #Forward + backward + optimize
-        if mode == 'Train':
+            #Forward + backward + optimize
             pred_score = model(X_facts_ids, X_facts_token_types,
                                X_facts_attn_masks, X_echr_ids,
                                X_echr_token_types, X_echr_attn_masks)
+            # Backpropagate
+            loss.backward()
+            # Update model
+            optimizer.step()
+        
+        # Eval / Test step        
         else:
             with torch.no_grad(): 
                 pred_score = model(X_facts_ids, X_facts_token_types,
@@ -66,12 +71,6 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
         pred_score = pred_score.view(-1)
         loss = criterion(pred_score, Y_labels)
         
-        if mode == 'Train':
-            # Backpropagate
-            loss.backward()
-            # Update model
-            optimizer.step()           
-        
         # Book-keeping
         current_batch_size = X_facts_ids.size()[0]
         total_entries += current_batch_size
@@ -79,7 +78,7 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
         pred_binary = torch.round(pred_score)
         sum_correct += (pred_binary == Y_labels).sum().item()
       
-        # Append values to lists
+        # Append predictions to lists
         Y_pred_score.append(pred_score)
         Y_pred_binary.append(pred_binary)
         Y_gr_truth.append(Y_labels)  
