@@ -82,9 +82,9 @@ def run_epoch_f(args, mode, model, criterion, optimizer,
         sum_correct += (pred_binary == Y_labels).sum().item()
       
         # Append predictions to lists
-        Y_pred_score += pred_score.cpu().numpy().tolist()
-        Y_pred_binary += pred_binary.cpu().numpy().tolist()
-        Y_gr_truth += Y_labels.cpu().numpy().tolist()
+        Y_pred_score += pred_score.cpu().detach().numpy().tolist()
+        Y_pred_binary += pred_binary.cpu().detach().numpy().tolist()
+        Y_gr_truth += Y_labels.cpu().detach().numpy().tolist()
       
         # Log train step
         if mode == 'Train':
@@ -147,9 +147,6 @@ def main():
         # Load datasets
         print('Loading data')
         test_dataset = pd.read_pickle(path_test_dataset)
-####
-        test_dataset = test_dataset[0:500]
-####
         print('Done')
         # Instantiate dataclasses
         test_dataset = ECHR2_dataset(test_dataset)

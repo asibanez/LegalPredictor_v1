@@ -13,7 +13,7 @@ from tqdm import tqdm
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from model_v0 import ECHR2_dataset, ECHR2_model
+from model_v1 import ECHR2_dataset, ECHR2_model
 
 #%% Train function
 

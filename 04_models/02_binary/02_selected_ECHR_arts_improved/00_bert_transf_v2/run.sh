@@ -2,12 +2,12 @@
 #OUTPUT_DIR=C:/Users/siban/Dropbox/CSAIL/Projects/12_Legal_Outcome_Predictor/00_data/v2/02_runs/01_binary/00_BERT_TRANSF_v2_FIX_50par_20ep/
 
 INPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/02_preprocessed/01_binary/01_selected_ECHR_arts/00_filtered
-OUTPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/03_runs/01_binary/01_selected_ECHR_arts/01_TEST_DELETE
+OUTPUT_DIR=/data/rsg/nlp/sibanez/03_LegalPredictor_v1/00_data/03_runs/01_binary/01_selected_ECHR_arts/01_TEST_DELETE/02_BERTx2_TRANSF_v2_FIX_50par_10ep_improved
 
-python train_test.py \
+python -m ipdb train_test.py \
     --input_dir=$INPUT_DIR \
     --output_dir=$OUTPUT_DIR \
-    --task=Test \
+    --task=Train \
     \
     --seq_len=256 \
     --num_labels=1 \
@@ -19,12 +19,12 @@ python train_test.py \
     --seed=1234 \
     --use_cuda=True \
     \
-    --n_epochs=2 \
-    --batch_size_train=4 \
+    --n_epochs=10 \
+    --batch_size_train=50 \
     --shuffle_train=True \
     --drop_last_train=True \
-    --dev_train_ratio=1 \
-    --train_toy_data=True \
+    --dev_train_ratio=2 \
+    --train_toy_data=False \
     --len_train_toy_data=30 \
     --lr=2e-5 \
     --wd=1e-6 \
@@ -33,7 +33,7 @@ python train_test.py \
     --save_final_model=True \
     --save_model_steps=True \
     --save_step_cliff=0 \
-    --gpu_ids_train=0 \
+    --gpu_ids_train=0,1,2,3,4,5,6,7 \
     \
     --test_file=model_test.pkl \
     --model_file=model.pt.1 \
